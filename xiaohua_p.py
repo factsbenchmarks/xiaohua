@@ -11,6 +11,7 @@ STORAGE_PATH = r'C:\xiaohua'
 RET_FAIL = 1
 
 def get_detail_info(page_url):
+    print('current process {}',os.getpid())
     detai_urls = []
     try:
         r = requests.get(page_url,timeout = 5)
@@ -70,7 +71,9 @@ def save_photo(photo_url,detai_introductions):
     folder_path = os.path.join(STORAGE_PATH,detai_introductions)
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-    photo_path = os.path.join(folder_path,photo_name+'.jpg',)
+    photo_path = os.path.join(folder_path,photo_name+'.jpg')
+    if os.path.exists(photo_path):
+        return RET_FAIL
     f = open(photo_path,'wb')
     f.write(r.content)
     f.close()
