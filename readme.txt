@@ -37,3 +37,18 @@
 		单进程的时间是1000s
 		8个进程的时间是800s
 		10个线程的时间是180s
+		
+4 回顾
+	Pool类 和 ThreadPoolExecutor 类
+        相同点
+			1)都有回调函数
+			2)使用回调函数，都需要定义两个函数，一个干完后，将返回值作为回调函数的参数
+		不同点
+			1)Pool类 回调函数是放在apply_async 里的一个callback参数
+			  ThreadPoolExecutor 回调函数是 future对象 调用add_done_callback方法
+			  
+			2)add_done_callback对应的回调函数，其参数是executor 调用 submit后 生成的future对象。
+			  回调函数函数体内首先对future调用result()，获取其值。
+			  Pool类的callback对应的回调函数，则不需。其值最后通过get()获取
+			  
+			3)相对而言，concurrent.futures代码量更少.
